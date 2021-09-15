@@ -11,6 +11,7 @@ let arg = process.argv[2]; //get directory
 
 function listNestedFiles (dir, cb) {
     readDir(dir,cb)
+    cb()
 }
 
 function readDir(dir,cb){
@@ -30,4 +31,8 @@ function checkIfDirectory(file,cb){
     })
 }
 
-listNestedFiles(arg, err => console.log(err))
+listNestedFiles(arg, err => {
+    if(err)
+        console.log(err)
+    console.log("completed")
+})
