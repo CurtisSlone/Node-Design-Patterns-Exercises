@@ -5,7 +5,7 @@
 */
 
 function makeSumTask(a,b){
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{ 
         console.log(a+b)
         resolve(a+b)
     })
@@ -20,7 +20,9 @@ let promises = [
     makeSumTask(2,3),
     makeSumTask(4,7),
     makeSumTask(1,6),
-    makeSumTask(9,8)
+    makeSumTask("a",8)
 ]
 
 promiseAll(promises)
+
+//Does no count for on rejected callbacks
