@@ -13,8 +13,12 @@ export class TaskQueue {
 
   runTask (task) {
     return new Promise((resolve, reject) => {
-      this.queue.push(() => {
-        return task().then(resolve, reject)
+      this.queue.push(async () => {
+        try{
+          resolve(task())
+        } catch (err) {
+          reject(err)
+        }
       })
       /*
         Was using Process.nextTick for async functionality
