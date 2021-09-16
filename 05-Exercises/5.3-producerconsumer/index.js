@@ -31,7 +31,7 @@ export class TaskQueuePC {
         .then(()=>this.consumer()) // recursively call consumer
     }
   
-    getNextTask () { //remove async key word as getNextTask will be async
+    getNextTask () { //remove async key word as getNextTask will be called asynchronously
       return new Promise((resolve) => {
         if (this.taskQueue.length !== 0) {
           return resolve(this.taskQueue.shift())
