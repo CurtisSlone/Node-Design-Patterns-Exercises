@@ -6,14 +6,6 @@ https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition/blob/ma
 
 */
 
-/*
-- Replace Original TaskQueuePC async/await with promises
-- Remove any async/await
-- Original found at: 
-https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition/blob/master/05-asynchronous-control-flow-patterns-with-promises-and-async-await/11-asyncawait-web-spider-v4/TaskQueuePC.js
-
-*/
-
 export class TaskQueuePC {
     constructor (concurrency) {
       this.taskQueue = []
