@@ -47,13 +47,12 @@ function algorithmMeasurement(algorithm, file, algorithmName){
                   startTimer = hrtime.bigint()
                   cb()
                 },
-                flush (cb) {
+                flush (cb) {.1
                   cb()
                 }
               }),
             algorithm(),
             monitor,
-            createWriteStream(`${file}.br`),
             (err)=>{
                 console.log(err)
             }
