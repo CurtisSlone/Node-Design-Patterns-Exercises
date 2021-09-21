@@ -47,7 +47,7 @@ function algorithmMeasurement(algorithm, file, algorithmName){
                   startTimer = hrtime.bigint()
                   cb()
                 },
-                flush (cb) {.1
+                flush (cb) {
                   cb()
                 }
               }),
