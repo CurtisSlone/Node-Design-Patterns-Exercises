@@ -8,13 +8,13 @@
 
 - When using get via the client, only use the filename and extension. The resource folder must be omited
 - Example:
-list
+[CMD] list
 
 basefolder/resource1.txt
 basefolder/resource2.txt
 basefolder/resource3.txt
 
-get resource1.txt resource2.txt
+[CMD] get resource1.txt resource2.txt
 
 ## TODO
 - Complete writing files to client after demultiplexing streams
