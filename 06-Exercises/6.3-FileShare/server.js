@@ -7,11 +7,11 @@
 //
 */
 import { fork } from 'child_process'
-import { createServer } from "net"
+import { createServer } from "net" 
 import fs from 'fs'
 import path from 'path'
-// import { createReadStream } from "stream"
-// import { createGzip } from "zlib"
+import { createReadStream } from "fs"
+import { createGzip } from "zlib"
 // import { basename } from "path"
 
 /*
@@ -106,14 +106,22 @@ class TCPServer {
     */
     sendResources(socket, ...resources){
         //map resources to resource root
-        let paths = resources.map(res => path.join(this.resourceRoot,res))
-        //remove escape character from last resource in paths array
-        paths[paths.length - 1] = paths[paths.length - 1].substring(0, paths[paths.length - 1].length - 1 )
-        let openChannels = paths.length
+        let arr =[]
+        socket.write("start")
+        arr.push(resources.length.toString())
+        resources[resources.length - 1] = resources[resources.length - 1].substring(0, resources[resources.length - 1].length - 1 )
+        resources.map(res=>arr.push(res))
+        socket.write("sig")
 
+        
+        //remove escape character from last resource in resources array
+        
+        let openChannels = resources.length
+        resources = resources.map(path=>createReadStream(path))
+        
         //Packet Switching algorithm
-        for (let i = 0; i < paths.length; i++) {
-            paths[i]
+        for (let i = 0; i < resources.length; i++) {
+            resources[i]
               .on('readable', function () { // ①
                 let chunk
                 while ((chunk = this.read()) !== null) {
