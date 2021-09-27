@@ -8,6 +8,8 @@
 
 - When using get via the client, only use the filename and extension. The resource folder must be omited
 - Example:
+
+
 [CMD] list
 
 basefolder/resource1.txt
