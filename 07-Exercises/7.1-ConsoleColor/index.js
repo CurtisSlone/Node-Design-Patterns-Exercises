@@ -15,7 +15,7 @@ class ColorConsole {
         this.terminal = terminal
     }
     log(){
-        console.log(this.terminal + '%s' + '\x1b[0m', this.string)
+        console.log(`${this.terminal}%s\x1b[0m`, this.string)
     }
 }
 
@@ -57,7 +57,7 @@ function colorFactory(string){
         case 'green':
             return new GreenConsole()
         default:
-            console.log("Did not understand choice. Please select red, blue, or green")
+            console.log(`Did not understand choice. Please select red, blue, or green`)
     }
 }
 
