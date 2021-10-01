@@ -8,7 +8,6 @@ class ConsoleProxy {
         this.consoleObject = consoleObject
     }
 
-
     log(message){
         return this.consoleObject.log(`${new Date().toISOString()} ${message}`)
     }
