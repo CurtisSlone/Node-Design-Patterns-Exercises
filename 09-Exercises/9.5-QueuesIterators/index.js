@@ -43,7 +43,6 @@ class AsyncQueue {
                     }
                 }
             }
-            
         }
     }
 }
@@ -62,13 +61,19 @@ async function main(){
 
     /*
     Enqueue extra tasks
+    - Add responsive async iterator for when queue reaches x tasks
+      invoke iterator
+    - Probably need to create a function that returns the Symbol.Iterator
+      This can be called when the object state has been changed
     */
-    setInterval(()=>{
-        console.log(`Enqueued Task ${taskCount}`)
-        asyncQueue.enqueue(taskWrapper())
-        taskCount++
-    }, 1000)
+    // setInterval(()=>{
+    //     console.log(`Enqueued Task ${taskCount}`)
+    //     asyncQueue.enqueue(taskWrapper())
+    //     taskCount++
+    // }, 1000)
 
+    // Can convert this to function that will be responsive to build up in queue
+    // and is ready to be iterated over
     for await (const asyncTask of asyncQueue){
         console.log(asyncTask)
     }
