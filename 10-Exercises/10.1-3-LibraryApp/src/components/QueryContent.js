@@ -43,7 +43,6 @@ export default class QueryContent extends react.Component {
         return html`
         <h1>${this.props.mode.toUpperCase()}</h1>
             <div className="resultsContainer">
-                
                 ${this.state.results.map((result,index)=> 
                     html`
                         <div key=${index}>
