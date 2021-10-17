@@ -2,7 +2,6 @@
     Using a JavaScript Proxy, create a wrapper for adding pre-initialization queues to any object. You should allow the consumer of the wrapper to decide which methods to augment and the name of the property/event that indicates if the component is initialized.
 */
 
-const queuedFunction = Symbol('queuedFunction')
 
 //Proxy Factory
 function proxyFactory (target, handler){
@@ -12,22 +11,35 @@ function proxyFactory (target, handler){
 const preInitHandler = {
   connected: false,
   preInitQueue: [],
-  execute: function (...args) {
-    // this.preInitQueue.forEach(command => command())
-    // this.preInitQueue = []
-   return console.log(`Connected`)
-  }, 
+  execute: async function () {
+    console.log(`Connected and executing`)
+    await this.preInitQueue.forEach(command => command())
+    this.preInitQueue = []
+  },
   get(target, property){
       if(property === 'connect'){
         this.connected = true
         return (...args)=>this.execute(...args)
       }
 
-      if(!this.connected)
-        return (...args)=>console.log(`Disconnected`)
+      if(property === 'disconnect'){
+        this.connected = false
+      }
 
+      if(this.connected){
+        return (...args)=>target[property](...args)
+      } //end if connected
+      
+      console.log(`Not Connected. Queueing Method`)
       return (...args)=>{
-        return target[property](...args)
+        console.log(`Command Queued:`, property, args)
+    return new Promise((res,rej)=>{
+      const command = () => {
+        target[property](...args)
+          .then(res,rej)
+      }
+      this.preInitQueue.push(command)
+    })
       }
     }
  }
@@ -35,14 +47,20 @@ const preInitHandler = {
 
 //Test Object
 const db = {
-  launch: (arg)=>console.log(arg)
+  launch: async (arg)=>console.log(arg)
 }
+
 
 function main(){
     const dbProxy = proxyFactory(db,preInitHandler)
-    db.launch(`Hello`)
+    dbProxy.launch(`Hello1`)
+    dbProxy.launch(`Hello3`)
+    dbProxy.connect()
     dbProxy.launch(`Hello2`)
-    
+    dbProxy.disconnect()
+    dbProxy.launch(`Hello4`)
+    //Can not reconnect
+    //dbProxy.connect()
 }
 
 main()
