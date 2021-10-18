@@ -19,39 +19,45 @@ const preInitHandler = {
     this.preInitQueue.forEach(command => command())
     this.preInitQueue = []
   },
-  get(target, property){
+  get(target, property){ 
       if(property === 'connect'){
         this.connected = true
         return (...args)=>this.execute(...args)
-      }
+      }//end if prop == connect
 
       if(property === 'disconnect'){
         this.connected = false
-      }
+      }//end if prop == disconnect
 
       if(this.connected){
         return (...args)=>target[property](...args)
       } //end if connected
       
       console.log(`Not Connected. Queueing Method`)
+
       return (...args)=>{
         console.log(`Command Queued:`, property, args)
-    return new Promise((res,rej)=>{
-      const command = () => {
-        target[property](...args)
-          .then(res,rej)
-      }
-      this.preInitQueue.push(command)
-    })
-      }
-    }
- }
+        return new Promise((res,rej)=>{
+          const command = () => {
+            target[property](...args)
+              .then(res,rej)
+          }
+          this.preInitQueue.push(command)
+       }) //End Promise
+      }// End Final Return
+    }// End Get Trap
+ } //End Proxy Handler 
 
 
-//Test Object
+
+/*
+ Testing
+*/
+
 const db = {
   launch: (()=>async (arg)=>console.log(arg))()
 }
+
 
 async function launcher(obj,num){
   await obj.launch(`Hello${num}`)
