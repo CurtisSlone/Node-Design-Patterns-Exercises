@@ -65,13 +65,13 @@ async function launcher(obj,num){
 function main(){
     const dbProxy = proxyFactory(db,preInitHandler)
     launcher(dbProxy,1)
-    launcher(dbProxy,3)
+    launcher(dbProxy,2)
     dbProxy.connect()
     setTimeout(()=>{
-      launcher(dbProxy,2)
+      launcher(dbProxy,4)
     },500)
-    dbProxy.disconnect()
-    launcher(dbProxy,4)
+    dbProxy.disconnect() 
+    launcher(dbProxy,3)
     //Can not reconnect
     // dbProxy.connect()
 }
