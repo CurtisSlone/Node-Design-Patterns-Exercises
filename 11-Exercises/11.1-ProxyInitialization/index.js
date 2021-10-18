@@ -1,5 +1,7 @@
 /*
-    Using a JavaScript Proxy, create a wrapper for adding pre-initialization queues to any object. You should allow the consumer of the wrapper to decide which methods to augment and the name of the property/event that indicates if the component is initialized.
+    Using a JavaScript Proxy, create a wrapper for adding pre-initialization queues to any object. 
+    You should allow the consumer of the wrapper to decide which methods to augment 
+    and the name of the property/event that indicates if the component is initialized.
 */
 
 
@@ -8,12 +10,13 @@ function proxyFactory (target, handler){
      return new Proxy(target, handler)
  } // End Proxy Factory
 
+ // Proxy Handler
 const preInitHandler = {
   connected: false,
   preInitQueue: [],
-  execute: async function () {
+  execute: function () {
     console.log(`Connected and executing`)
-    await this.preInitQueue.forEach(command => command())
+    this.preInitQueue.forEach(command => command())
     this.preInitQueue = []
   },
   get(target, property){
@@ -47,20 +50,24 @@ const preInitHandler = {
 
 //Test Object
 const db = {
-  launch: async (arg)=>console.log(arg)
+  launch: (()=>async (arg)=>console.log(arg))()
 }
 
-
+async function launcher(obj,num){
+  await obj.launch(`Hello${num}`)
+}
 function main(){
     const dbProxy = proxyFactory(db,preInitHandler)
-    dbProxy.launch(`Hello1`)
-    dbProxy.launch(`Hello3`)
+    launcher(dbProxy,1)
+    launcher(dbProxy,3)
     dbProxy.connect()
-    dbProxy.launch(`Hello2`)
+    setTimeout(()=>{
+      launcher(dbProxy,2)
+    },500)
     dbProxy.disconnect()
-    dbProxy.launch(`Hello4`)
+    launcher(dbProxy,4)
     //Can not reconnect
-    //dbProxy.connect()
+    // dbProxy.connect()
 }
 
 main()
